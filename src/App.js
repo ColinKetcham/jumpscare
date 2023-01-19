@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import { Routes, Route, Link, Outlet } from 'react-router-dom';
 
-import TvList from './components/tvShowsList';
+import TvList from './components/TvShowsList';
 import Header from './components/Header';
 import MovieList from './components/MoviesList';
 import Player from './components/Player';

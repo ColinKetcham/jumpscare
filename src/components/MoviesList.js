@@ -1,5 +1,5 @@
 import React from 'react';
-import ListItem from './listItem';
+import ListItem from './ListItem';
 
 import { popularMovies } from '../dummyData';
 
@@ -8,7 +8,6 @@ const MovieList = () => {
     <div
       style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
     >
-      huh
       {popularMovies.results.map((item) => {
         return (
           <ListItem item={item} key={item.id} style={{ padding: '2rem' }} />
