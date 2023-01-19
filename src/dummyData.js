@@ -484,9 +484,6 @@ export const popularMovies = {
 export const ep01StrangerJumpScares = {
   title: 'Stranger things ep1',
   jumps: [
-    { timeStamp: 15000, description: 'this one is a test at 15 seconds' },
-    { timeStamp: 30000, description: 'this one is a test at 30 seconds' },
-    { timeStamp: 45000, description: 'this one is a test at 45 seconds' },
     {
       timeStamp: 652000,
       description: 'A door bursts open and goes flying onto Dr. Brenner.',
