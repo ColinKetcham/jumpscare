@@ -1,12 +1,14 @@
 import logo from './logo.svg';
 import './App.css';
+import { Routes, Route, Link, Outlet } from 'react-router-dom';
 
-import List from './components/moviesList';
+import List from './components/MoviesList';
 import TvList from './components/tvShowsList';
 import Player from './components/player';
 import TimeLine from './components/TimeLine';
 import { Stopwatch } from './components/Stopwatch';
 import Header from './components/Header';
+import MovieList from './components/MoviesList';
 
 import React, { useState } from 'react';
 
@@ -21,8 +23,12 @@ function App() {
         flexDirection: 'column',
       }}
     >
-      <Header />
-      <TvList />
+      <Routes>
+        <Route path='/' element={<Header />}>
+          <Route path='tvshows' element={<TvList />} />
+          <Route path='movies' element={<MovieList />} />
+        </Route>
+      </Routes>
     </div>
   );
 }
