@@ -8,6 +8,7 @@ const MovieList = () => {
     <div
       style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
     >
+      huh
       {popularMovies.results.map((item) => {
         return (
           <ListItem item={item} key={item.id} style={{ padding: '2rem' }} />
