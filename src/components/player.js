@@ -1,54 +1,192 @@
 import React, { useState, useEffect } from 'react';
-import { Paper, Typography, Button } from '@mui/material';
+import { ep01StrangerJumpScares, testingStamps } from '../dummyData';
+import Counter from './Counter';
+import { LinearProgress, Slider, Box, Button, IconButton } from '@mui/material';
+
+import { PlayArrowRounded, PauseRounded, Close } from '@mui/icons-material';
+
+import { useNavigate } from 'react-router-dom';
+
+const details = testingStamps;
 
 const Player = () => {
-  const [startTime, setStart] = useState(0);
-  const [watchTime, setWatch] = useState(0);
+  const [time, setTime] = useState(0);
+  const [running, setRunning] = useState(false);
 
-  const [isActive, setIsActive] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
+  const [upcoming, setUpcoming] = useState(details.jumps);
+  const [active, setActive] = useState({ timeStamp: 0 });
+  const [finished, setFinished] = useState([]);
+
+  const navigate = useNavigate();
+
+  const buffer = 10000; //10 seconds of buffer
+  const duration = 900000;
 
   useEffect(() => {
-    console.log(startTime);
-    setWatch(0);
-  }, [startTime]);
-
-  const clickPlay = () => {
-    if (startTime === 0) {
-      setIsActive(true);
-      console.log('playing');
-      setStart(Date.now());
-      setWatch(0);
-      var interval = 1000; // ms
-      var expected = Date.now() + interval;
-      setTimeout(step, interval);
-      function step() {
-        var dt = Date.now() - expected; // the drift (positive for overshooting)
-        if (dt > interval) {
-          // something really bad happened. Maybe the browser (tab) was inactive?
-          // possibly special handling to avoid futile "catch up" run
-        }
-        // do what is to be done
-        setWatch(Date.now() - startTime);
-        expected += interval;
-        if (isActive) {
-          setTimeout(step, Math.max(0, interval - dt)); // take into account drift
-        }
-      }
+    const initialTime = Date.now() - time;
+    let interval;
+    if (running) {
+      interval = setInterval(() => {
+        setTime((prevTime) => {
+          return Date.now() - initialTime;
+        });
+      }, 1000);
+    } else if (!running) {
+      clearInterval(interval);
     }
+    return () => clearInterval(interval);
+  }, [running]);
+
+  useEffect(() => {
+    let nextActive = active;
+    let nextActiveTimeStamp = 0;
+    if (nextActive !== undefined) {
+      nextActiveTimeStamp = nextActive.timeStamp;
+    }
+    if (nextActiveTimeStamp < time && nextActiveTimeStamp !== 0) {
+      let newFinished = finished;
+      newFinished.push(active);
+      setFinished(newFinished);
+      setActive({ timeStamp: 0 });
+    }
+    let nextAlert = upcoming[0];
+    let nextStamp = 0;
+    if (nextAlert !== undefined) {
+      nextStamp = nextAlert.timeStamp;
+    }
+    if (time + buffer > nextStamp) {
+      setActive(upcoming[0]);
+      let newUpcomming = upcoming;
+      newUpcomming.shift();
+      setUpcoming(newUpcomming);
+    }
+  }, [time]);
+
+  const play = () => {
+    setRunning(true);
   };
 
-  const clickStop = () => {
-    setStart(0);
-    setIsActive(false);
+  const pause = () => {
+    setRunning(false);
   };
 
   return (
-    <div>
-      Player
-      <Button onClick={clickPlay}>Play</Button>
-      <Button onClick={clickStop}>Stop</Button>
-      {watchTime}
+    <div
+      className='stopwatch'
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    >
+      <IconButton
+        onClick={() => {
+          navigate(-1);
+        }}
+        sx={{
+          '&:hover': {
+            background: 'rgb(50,50,50)',
+          },
+        }}
+      >
+        <Close sx={{ fontSize: '3rem' }} htmlColor={'white'} />
+      </IconButton>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          width: '90%',
+          height: '90vh',
+          backgroundColor: 'rgb(20, 20, 20)',
+          padding: '1rem',
+        }}
+      >
+        <div>{details.title}</div>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            width: '90%',
+          }}
+        >
+          Active alert :{active.description} in:
+          <Counter time={active.timeStamp - time} includeSeconds={false} />
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            width: '90%',
+          }}
+        >
+          <Counter time={time} includeSeconds={true} />
+          <div className='buttons'>
+            {!running ? (
+              <IconButton
+                onClick={play}
+                sx={{
+                  '&:hover': {
+                    background: 'rgb(50,50,50)',
+                  },
+                }}
+              >
+                <PlayArrowRounded
+                  sx={{ fontSize: '3rem' }}
+                  htmlColor={'white'}
+                />
+              </IconButton>
+            ) : (
+              <IconButton
+                onClick={pause}
+                sx={{
+                  '&:hover': {
+                    background: 'rgb(50,50,50)',
+                  },
+                }}
+              >
+                <PauseRounded sx={{ fontSize: '3rem' }} htmlColor={'white'} />
+              </IconButton>
+            )}
+
+            {/* <Button onClick={() => setTime(0)}>Reset</Button> */}
+          </div>
+          <Slider
+            aria-label='time-indicator'
+            size='small'
+            value={time}
+            min={0}
+            step={1}
+            max={duration}
+            onChange={(_, value) => setTime(value)}
+            sx={{
+              color: 'white',
+              height: 4,
+              '& .MuiSlider-thumb': {
+                width: 8,
+                height: 8,
+                transition: '0.3s cubic-bezier(.47,1.64,.41,.8)',
+                '&:before': {
+                  boxShadow: '0 2px 12px 0 rgba(0,0,0,0.4)',
+                },
+                '&:hover, &.Mui-focusVisible': {
+                  boxShadow: `0px 0px 0px 8px ${'rgb(0 0 0 / 16%)'}`,
+                },
+                '&.Mui-active': {
+                  width: 20,
+                  height: 20,
+                },
+              },
+              '& .MuiSlider-rail': {
+                opacity: 0.28,
+              },
+            }}
+          />
+        </div>
+      </Box>
     </div>
   );
 };

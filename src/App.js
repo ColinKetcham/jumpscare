@@ -2,13 +2,10 @@ import logo from './logo.svg';
 import './App.css';
 import { Routes, Route, Link, Outlet } from 'react-router-dom';
 
-import List from './components/MoviesList';
 import TvList from './components/tvShowsList';
-import Player from './components/player';
-import TimeLine from './components/TimeLine';
-import { Stopwatch } from './components/Stopwatch';
 import Header from './components/Header';
 import MovieList from './components/MoviesList';
+import Player from './components/Player';
 
 import React, { useState } from 'react';
 
@@ -28,6 +25,7 @@ function App() {
           <Route path='tvshows' element={<TvList />} />
           <Route path='movies' element={<MovieList />} />
         </Route>
+        <Route path='/player' element={<Player />}></Route>
       </Routes>
     </div>
   );

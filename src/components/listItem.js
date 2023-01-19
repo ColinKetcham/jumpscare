@@ -9,7 +9,12 @@ import {
   Button,
 } from '@mui/material';
 
-const listItem = ({ item }) => {
+import Link from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+
+const ListItem = ({ item }) => {
+  const navigate = useNavigate();
+
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
@@ -26,11 +31,18 @@ const listItem = ({ item }) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size='small'>Play</Button>
+        <Button
+          size='small'
+          onClick={() => {
+            navigate('/player');
+          }}
+        >
+          Play
+        </Button>
         <Button size='small'>Add jumps</Button>
       </CardActions>
     </Card>
   );
 };
 
-export default listItem;
+export default ListItem;
