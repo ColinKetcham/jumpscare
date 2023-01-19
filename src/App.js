@@ -6,6 +6,7 @@ import TvList from './components/tvShowsList';
 import Player from './components/player';
 import TimeLine from './components/TimeLine';
 import { Stopwatch } from './components/Stopwatch';
+import Header from './components/Header';
 
 import React, { useState } from 'react';
 
@@ -16,13 +17,12 @@ function App() {
     <div
       style={{
         backgroundColor: 'black',
-        height: '100vh',
         display: 'flex',
         flexDirection: 'column',
       }}
     >
-      <span style={{ color: 'white', alignSelf: 'center' }}>Jump Scare</span>
-      <Stopwatch />
+      <Header />
+      <TvList />
     </div>
   );
 }

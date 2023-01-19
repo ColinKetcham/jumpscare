@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { ep01StrangerJumpScares } from '../dummyData';
+import { ep01StrangerJumpScares, testingStamps } from '../dummyData';
 import Counter from './Counter';
 import { LinearProgress, Slider, Box, Button, IconButton } from '@mui/material';
 
 import { PlayArrowRounded, PauseRounded } from '@mui/icons-material';
 
-const details = ep01StrangerJumpScares;
+const details = testingStamps;
 
 export const Stopwatch = () => {
   const [time, setTime] = useState(0);

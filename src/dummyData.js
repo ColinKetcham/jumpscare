@@ -502,3 +502,12 @@ export const ep01StrangerJumpScares = {
     },
   ],
 };
+
+export const testingStamps = {
+  title: 'TestingStamps',
+  jumps: [
+    { timeStamp: 11000, description: 'this one is a test at 11 seconds' },
+    { timeStamp: 30000, description: 'this one is a test at 30 seconds' },
+    { timeStamp: 45000, description: 'this one is a test at 45 seconds' },
+  ],
+};
