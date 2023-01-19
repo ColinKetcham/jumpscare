@@ -481,19 +481,24 @@ export const popularMovies = {
   total_results: 734231,
 };
 
-export const ep01StrangerJumpScares = [
-  {
-    timeStamp: '00:06:52',
-    description: 'A door bursts open and goes flying onto Dr. Brenner.',
-  },
-  {
-    timeStamp: '00:46:57',
-    description:
-      'Eddie grabs Chrissy’s shoulder while she’s distracted by a clock.',
-  },
-  {
-    timeStamp: '01:09:50',
-    description:
-      'Chrissy grabs her dad but then she sees him with no eyes or mouth, accompanied by a sound effect.',
-  },
-];
+export const ep01StrangerJumpScares = {
+  title: 'Stranger things ep1',
+  jumps: [
+    { timeStamp: 15000, description: 'this one is a test at 15 seconds' },
+    { timeStamp: 30000, description: 'this one is a test at 30 seconds' },
+    { timeStamp: 45000, description: 'this one is a test at 45 seconds' },
+    {
+      timeStamp: 652000,
+      description: 'A door bursts open and goes flying onto Dr. Brenner.',
+    },
+    {
+      timeStamp: 4657000,
+      description: `Eddie grabs Chrissy’s shoulder while she’s distracted by a clock.`,
+    },
+    {
+      timeStamp: 10950000,
+      description:
+        'Chrissy grabs her dad but then she sees him with no eyes or mouth, accompanied by a sound effect.',
+    },
+  ],
+};
