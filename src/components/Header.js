@@ -13,6 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { Outlet, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const pages = ['TV Shows', 'Movies', 'Search'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -21,6 +22,8 @@ function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
+  const navigate = useNavigate();
+
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -28,8 +31,9 @@ function Header() {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
+  const handleCloseNavMenu = (destination) => {
     setAnchorElNav(null);
+    navigate(destination);
   };
 
   const handleCloseUserMenu = () => {
@@ -90,12 +94,14 @@ function Header() {
                 }}
               >
                 {pages.map((page) => (
-                  <Link key={page} to={page.split(' ').join('')}>
-                  
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
+                  <MenuItem
+                    key={page}
+                    onClick={() => {
+                      handleCloseNavMenu(page.split(' ').join(''));
+                    }}
+                  >
                     <Typography textAlign='center'>{page}</Typography>
                   </MenuItem>
-                  <Link/>
                 ))}
               </Menu>
             </Box>
@@ -120,14 +126,15 @@ function Header() {
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               {pages.map((page) => (
-                <Link key={page} to={page.split(' ').join('')}>
-                  <Button
-                    onClick={handleCloseNavMenu}
-                    sx={{ my: 2, color: 'white', display: 'block' }}
-                  >
-                    {page}
-                  </Button>
-                </Link>
+                <Button
+                  key={page}
+                  onClick={() => {
+                    handleCloseNavMenu(page.split(' ').join(''));
+                  }}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  {page}
+                </Button>
               ))}
             </Box>
 
