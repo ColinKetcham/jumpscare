@@ -90,9 +90,12 @@ function Header() {
                 }}
               >
                 {pages.map((page) => (
+                  <Link key={page} to={page.split(' ').join('')}>
+                  
                   <MenuItem key={page} onClick={handleCloseNavMenu}>
                     <Typography textAlign='center'>{page}</Typography>
                   </MenuItem>
+                  <Link/>
                 ))}
               </Menu>
             </Box>
