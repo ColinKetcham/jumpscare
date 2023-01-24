@@ -9,8 +9,6 @@ import Player from './components/Player';
 
 import React, { useState } from 'react';
 
-console.log(process.env);
-
 function App() {
   return (
     <div
