@@ -11,11 +11,11 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
+import RoomServiceIcon from '@mui/icons-material/RoomService';
 import { Outlet, Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
-const pages = ['TV Shows', 'Movies', 'Search'];
+const pages = ['TV Shows'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function Header() {
@@ -45,7 +45,10 @@ function Header() {
       <AppBar position='static' sx={{ backgroundColor: '#133353' }}>
         <Container maxWidth='xl'>
           <Toolbar disableGutters>
-            <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+            <RoomServiceIcon
+              sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}
+            />
+
             <Typography
               variant='h6'
               noWrap
@@ -105,7 +108,9 @@ function Header() {
                 ))}
               </Menu>
             </Box>
-            <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+            <RoomServiceIcon
+              sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}
+            />
             <Typography
               variant='h5'
               noWrap
@@ -122,7 +127,7 @@ function Header() {
                 textDecoration: 'none',
               }}
             >
-              LOGO
+              JumpScare
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               {pages.map((page) => (

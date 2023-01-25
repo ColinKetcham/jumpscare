@@ -16,18 +16,25 @@ const ListItem = ({ item }) => {
   const navigate = useNavigate();
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 345, margin: '1rem' }}>
       <CardMedia
         sx={{ height: 140 }}
-        image={`https://image.tmdb.org/t/p/original/${item.backdrop_path}`}
+        image={item.still_path}
         title={item.name}
       />
       <CardContent>
         <Typography gutterBottom variant='h5' component='div'>
-          {item.name} {item.title}
+          {item.name}
         </Typography>
         <Typography variant='body2' color='text.secondary'>
           {item.overview}
+        </Typography>
+        <Typography
+          variant='body1'
+          color='text.primary'
+          sx={{ paddingTop: '1rem' }}
+        >
+          number of alerts:{item.stamps.length}
         </Typography>
       </CardContent>
       <CardActions>
@@ -40,6 +47,7 @@ const ListItem = ({ item }) => {
           Play
         </Button>
         <Button size='small'>Add jumps</Button>
+        <Button size='small'>View</Button>
       </CardActions>
     </Card>
   );

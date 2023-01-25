@@ -1,3 +1,74 @@
+export const mediaDummy = [
+  {
+    id: 1,
+    title: 'stranger things s04ep01',
+    type: 'tv',
+    tvid: 66732,
+    season_number: 4,
+    episode_number: 1,
+    stamps: [
+      {
+        id: 1,
+        description: 'this should be 10 seconds',
+        startTime: 10000,
+        endTime: null,
+        type: 'jump',
+        mediumId: 1,
+      },
+      {
+        id: 2,
+        description: 'this should be 25 seconds',
+        startTime: 25000,
+        endTime: null,
+        type: 'jump',
+        mediumId: 1,
+      },
+      {
+        id: 3,
+        description: 'this should be 40 seconds',
+        startTime: 40000,
+        endTime: null,
+        type: 'jump',
+        mediumId: 1,
+      },
+    ],
+    still_path: '/cmCOUjjQ1TfCh1Gj9V4IFAd2XNu.jpg',
+    runtime: 78,
+    overview:
+      'El is bullied at school. Joyce opens a mysterious package. A scrappy player shakes up D&D night.',
+  },
+  {
+    id: 2,
+    title: 'stranger things s04ep02',
+    type: 'tv',
+    tvid: 66732,
+    season_number: 4,
+    episode_number: 2,
+    stamps: [
+      {
+        id: 4,
+        description: 'this should be 25 seconds',
+        startTime: 25000,
+        endTime: null,
+        type: 'jump',
+        mediumId: 2,
+      },
+      {
+        id: 5,
+        description: 'this should be 40 seconds',
+        startTime: 40000,
+        endTime: null,
+        type: 'jump',
+        mediumId: 2,
+      },
+    ],
+    still_path: '/f7TDfu49srrDclKfd9UjQSDhcWA.jpg',
+    runtime: 78,
+    overview:
+      'A plane brings Mike to California — and a dead body brings Hawkins to a halt. Nancy goes looking for leads. A shaken Eddie tells the gang what he saw.',
+  },
+];
+
 export const strangerthings = {
   adult: false,
   backdrop_path: '/56v2KjBlU4XaOv9rVYEQypROD7P.jpg',
