@@ -16,7 +16,7 @@ import { Outlet, Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 const pages = ['TV Shows'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Add Media'];
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -36,8 +36,9 @@ function Header() {
     navigate(destination);
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (destination) => {
     setAnchorElUser(null);
+    navigate(destination);
   };
 
   return (
@@ -166,7 +167,12 @@ function Header() {
                 onClose={handleCloseUserMenu}
               >
                 {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <MenuItem
+                    key={setting}
+                    onClick={() => {
+                      handleCloseUserMenu(setting.split(' ').join(''));
+                    }}
+                  >
                     <Typography textAlign='center'>{setting}</Typography>
                   </MenuItem>
                 ))}

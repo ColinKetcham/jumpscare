@@ -5,6 +5,8 @@ import TvList from './components/TvShowsList';
 import Header from './components/Header';
 import MovieList from './components/MoviesList';
 import Player from './components/Player';
+import { AddMedia } from './components/AddMedia';
+import SignInSide from './components/SignIn';
 
 import React, { useState } from 'react';
 
@@ -20,9 +22,11 @@ function App() {
       <Routes>
         <Route path='/' element={<Header />}>
           <Route path='tvshows' element={<TvList />} />
-          <Route path='movies' element={<MovieList />} />
+          {/* <Route path='movies' element={<MovieList />} /> */}
+          <Route path='AddMedia' element={<AddMedia />} />
         </Route>
-        <Route path='/player' element={<Player />}></Route>
+        <Route path='/player' element={<Player />} />
+        <Route path='/signin' element={<SignInSide />} />
       </Routes>
     </div>
   );
