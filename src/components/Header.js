@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -14,13 +14,21 @@ import MenuItem from '@mui/material/MenuItem';
 import RoomServiceIcon from '@mui/icons-material/RoomService';
 import { Outlet, Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const pages = ['TV Shows'];
-const settings = ['Add Media'];
+const settings = ['Add Media', 'Sign In'];
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const auth = useSelector((state) => state.auth);
+
+  const isLoggedIn = !!auth;
+
+  // useEffect(()=>{
+
+  // },[auth])
 
   const navigate = useNavigate();
 
@@ -143,41 +151,53 @@ function Header() {
                 </Button>
               ))}
             </Box>
-
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title='Open settings'>
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: '45px' }}
-                id='menu-appbar'
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting) => (
-                  <MenuItem
-                    key={setting}
-                    onClick={() => {
-                      handleCloseUserMenu(setting.split(' ').join(''));
-                    }}
+            {isLoggedIn ? (
+              <Box sx={{ flexGrow: 0 }}>
+                <Tooltip title='Open settings'>
+                  <IconButton
+                    onClick={handleOpenUserMenu}
+                    sx={{ p: 0, borderWidth: 'medium' }}
                   >
-                    <Typography textAlign='center'>{setting}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
+                    <Avatar
+                      alt={auth.username}
+                      src={auth.profilePic}
+                      sx={{
+                        border: '1px solid lightgray',
+                      }}
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: '45px' }}
+                  id='menu-appbar'
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  {settings.map((setting) => (
+                    <MenuItem
+                      key={setting}
+                      onClick={() => {
+                        handleCloseUserMenu(setting.split(' ').join(''));
+                      }}
+                    >
+                      <Typography textAlign='center'>{setting}</Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </Box>
+            ) : (
+              ''
+            )}
           </Toolbar>
         </Container>
       </AppBar>

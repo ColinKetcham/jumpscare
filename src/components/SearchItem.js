@@ -12,10 +12,15 @@ import {
 import Link from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
+import { createMedia } from '../redux/medias';
+
+import { useDispatch } from 'react-redux';
+
 const fillerImage =
   'https://www.pngitem.com/pimgs/m/279-2792492_yu-no-meme-hd-png-download.png';
 
 const SearchItem = ({ item }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   if (item.backdrop_path !== null && item.backdrop_path !== fillerImage) {
     item.backdrop_path =
@@ -23,6 +28,17 @@ const SearchItem = ({ item }) => {
   } else {
     item.backdrop_path = fillerImage;
   }
+
+  const addToServer = (item) => {
+    const newMedia = {
+      title: item.name,
+      type: 'tv',
+      tvid: item.id, //stranger things
+      season_number: 1,
+      episode_number: 1,
+    };
+    dispatch(createMedia(newMedia));
+  };
 
   return (
     <Card sx={{ maxWidth: 345, margin: '1rem' }}>
@@ -48,7 +64,7 @@ const SearchItem = ({ item }) => {
         <Button
           size='small'
           onClick={() => {
-            console.log('gotta add it to the server lol. id:', item.id);
+            addToServer(item);
           }}
         >
           Add

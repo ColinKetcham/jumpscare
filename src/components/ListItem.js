@@ -14,6 +14,11 @@ import { useNavigate } from 'react-router-dom';
 
 const ListItem = ({ item }) => {
   const navigate = useNavigate();
+  const stamps = item.stamps;
+  let stampLength = 0;
+  if (stamps !== undefined) {
+    stampLength = stamps.length;
+  }
 
   return (
     <Card sx={{ maxWidth: 345, margin: '1rem' }}>
@@ -34,7 +39,7 @@ const ListItem = ({ item }) => {
           color='text.primary'
           sx={{ paddingTop: '1rem' }}
         >
-          number of alerts:{item.stamps.length}
+          number of alerts:{stampLength}
         </Typography>
       </CardContent>
       <CardActions>

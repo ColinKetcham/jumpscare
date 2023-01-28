@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,6 +12,10 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { authenticate } from '../redux/auth';
+import { useNavigate } from 'react-router';
 
 function Copyright(props) {
   return (
@@ -34,14 +38,27 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignInSide() {
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+
+    dispatch(authenticate(data.get('username'), data.get('password')));
     console.log({
-      email: data.get('email'),
+      username: data.get('username'),
       password: data.get('password'),
     });
   };
+
+  useEffect(() => {
+    if (auth.id !== undefined) {
+      console.log('logged in');
+      navigate('/');
+    }
+  }, [auth]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -89,10 +106,10 @@ export default function SignInSide() {
                 margin='normal'
                 required
                 fullWidth
-                id='email'
-                label='Email Address'
-                name='email'
-                autoComplete='email'
+                id='username'
+                label='Username'
+                name='username'
+                autoComplete='username'
                 autoFocus
               />
               <TextField

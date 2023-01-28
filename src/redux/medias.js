@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { serverUrl } from './constants';
+const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 //action constant
 const SET_MEDIAS = 'SET_MEDIAS';
@@ -28,9 +28,18 @@ export const fetchMedias = () => {
 
 export const createMedia = (media, history) => {
   return async (dispatch) => {
-    const { data: created } = await axios.post(`${serverUrl}/api/media`, media);
+    const token = window.localStorage.getItem('token');
+    const { data: created } = await axios.post(
+      `${serverUrl}/api/media`,
+      media,
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
     dispatch(_createMedia(created));
-    history.push('/medias/all');
+    // history.push('/medias/all');
   };
 };
 
