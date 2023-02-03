@@ -11,14 +11,22 @@ import {
 
 import Link from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+
+import { deleteMedia } from '../redux/media';
 
 const ListItem = ({ item }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const stamps = item.stamps;
   let stampLength = 0;
   if (stamps !== undefined) {
     stampLength = stamps.length;
   }
+
+  const remove = () => {
+    dispatch(deleteMedia(item.id));
+  };
 
   return (
     <Card sx={{ maxWidth: 345, margin: '1rem' }}>
@@ -46,13 +54,18 @@ const ListItem = ({ item }) => {
         <Button
           size='small'
           onClick={() => {
-            navigate('/player');
+            navigate(
+              `/player?show=${item.tvid}&season=${item.season_number}&episode=${item.episode_number}`
+            );
           }}
         >
           Play
         </Button>
         <Button size='small'>Add jumps</Button>
         <Button size='small'>View</Button>
+        <Button size='small' sx={{ color: 'red' }} onClick={remove}>
+          Remove
+        </Button>
       </CardActions>
     </Card>
   );

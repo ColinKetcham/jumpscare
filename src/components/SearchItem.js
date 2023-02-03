@@ -12,7 +12,7 @@ import {
 import Link from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-import { createMedia } from '../redux/medias';
+import { createMedia } from '../redux/media';
 
 import { useDispatch } from 'react-redux';
 

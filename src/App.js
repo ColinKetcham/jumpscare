@@ -8,7 +8,7 @@ import Player from './components/Player';
 import { AddMedia } from './components/AddMedia';
 import SignInSide from './components/SignIn';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { me } from './redux/auth';
@@ -17,12 +17,8 @@ function App() {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
 
-  const fetchedData = useRef(false);
   useEffect(() => {
-    if (!fetchedData.current) {
-      dispatch(me());
-      fetchedData.current = true;
-    }
+    dispatch(me());
   }, []);
 
   return (

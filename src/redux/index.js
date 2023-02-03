@@ -1,12 +1,13 @@
 import { combineReducers } from 'redux';
-import mediasReducer from './medias';
+
 import stampsReducer from './stamps';
 import authReducer from './auth';
+import media from './media';
 
 const appReducer = combineReducers({
-  medias: mediasReducer,
   stamps: stampsReducer,
   auth: authReducer,
+  media: media,
 });
 
 export default appReducer;
