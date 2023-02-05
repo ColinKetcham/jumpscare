@@ -47,10 +47,6 @@ export default function SignInSide() {
     const data = new FormData(event.currentTarget);
 
     dispatch(authenticate(data.get('username'), data.get('password')));
-    console.log({
-      username: data.get('username'),
-      password: data.get('password'),
-    });
   };
 
   useEffect(() => {

@@ -45,6 +45,7 @@ const Recorder = () => {
   const [stampTime, setStampTime] = useState(0);
 
   const [open, setOpen] = React.useState(false);
+
   const handleOpen = () => {
     setOpen(true);
     setStampTime(time);

@@ -36,6 +36,10 @@ export const fetchStamps = createAsyncThunk('stamp/fetch', async (show) => {
       params: show,
     });
 
+    data.stamps = data.stamps.sort((a, b) => {
+      return a.startTime - b.startTime;
+    });
+
     return data;
   } catch (error) {
     console.error(error);

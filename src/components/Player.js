@@ -13,8 +13,13 @@ const Player = () => {
   const [time, setTime] = useState(0);
   const [running, setRunning] = useState(false);
   const stamps = useSelector((state) => state.stamps.stamp);
+
   const title = useSelector((state) => state.stamps.title);
   const loaded = useSelector((state) => state.stamps.loaded);
+
+  const info = useSelector((state) => state.stamps);
+
+  const [alert, setAlert] = useState('false');
 
   const [next, setNext] = useState(0);
 
@@ -23,7 +28,6 @@ const Player = () => {
   const navigate = useNavigate();
 
   const buffer = 10000; //10 seconds of buffer
-  const duration = 900000;
 
   let [searchParams, setSearchParams] = useSearchParams();
 
@@ -47,29 +51,39 @@ const Player = () => {
 
   useEffect(() => {
     // on running change
-    const initialTime = Date.now() - time;
-    let interval;
-    if (running) {
-      interval = setInterval(() => {
-        setTime((prevTime) => {
-          return Date.now() - initialTime;
-        });
-      }, 1000);
-    } else if (!running) {
-      clearInterval(interval);
+    if (time < info.duration) {
+      const initialTime = Date.now() - time;
+      let interval;
+      if (running) {
+        interval = setInterval(() => {
+          setTime((prevTime) => {
+            return Date.now() - initialTime;
+          });
+        }, 1000);
+      } else if (!running) {
+        clearInterval(interval);
+      }
+      return () => clearInterval(interval);
     }
-    return () => clearInterval(interval);
   }, [running]);
 
   useEffect(() => {
     //on time change
     if (loaded) {
       if (stamps[next].startTime < time) {
-        if (next < stamps.length) {
+        if (next < stamps.length - 1) {
           setNext(next + 1);
+          setAlert(false);
         } else {
-          setNext(null);
+          setNext(0);
         }
+      } else if (next > 0 && stamps[next - 1].startTime > time) {
+        setNext(next - 1);
+      }
+      if (stamps[next].startTime < time + buffer) {
+        setAlert(true);
+      } else {
+        setAlert(false);
       }
     }
   }, [time]);
@@ -91,6 +105,7 @@ const Player = () => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            color: alert ? 'black' : 'white',
           }}
         >
           <IconButton
@@ -104,7 +119,10 @@ const Player = () => {
               },
             }}
           >
-            <Close sx={{ fontSize: '3rem' }} htmlColor={'white'} />
+            <Close
+              sx={{ fontSize: '3rem' }}
+              htmlColor={alert ? 'black' : 'white'}
+            />
           </IconButton>
           <Box
             sx={{
@@ -114,7 +132,7 @@ const Player = () => {
               justifyContent: 'space-between',
               width: '90%',
               height: '90vh',
-              backgroundColor: 'rgb(20, 20, 20)',
+              backgroundColor: alert ? 'rgb(255, 255, 255)' : 'rgb(20, 20, 20)',
               padding: '1rem',
             }}
           >
@@ -154,7 +172,7 @@ const Player = () => {
                   >
                     <PlayArrowRounded
                       sx={{ fontSize: '3rem' }}
-                      htmlColor={'white'}
+                      htmlColor={alert ? 'black' : 'white'}
                     />
                   </IconButton>
                 ) : (
@@ -168,7 +186,7 @@ const Player = () => {
                   >
                     <PauseRounded
                       sx={{ fontSize: '3rem' }}
-                      htmlColor={'white'}
+                      htmlColor={alert ? 'black' : 'white'}
                     />
                   </IconButton>
                 )}
@@ -181,10 +199,13 @@ const Player = () => {
                 value={time}
                 min={0}
                 step={1}
-                max={duration}
-                onChange={(_, value) => setTime(value)}
+                max={info.duration}
+                onChange={(_, value) => {
+                  setRunning(false);
+                  setTime(value);
+                }}
                 sx={{
-                  color: 'white',
+                  color: alert ? 'black' : 'white',
                   height: 4,
                   '& .MuiSlider-thumb': {
                     width: 8,
