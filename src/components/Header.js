@@ -17,19 +17,14 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const pages = ['TV Shows'];
-const settings = ['Add Media', 'Sign In'];
+const settings = ['Add Media', 'Log Out'];
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const auth = useSelector((state) => state.auth);
 
-  const isLoggedIn = !!auth;
-
-  // useEffect(()=>{
-
-  // },[auth])
-
+  const isLoggedIn = !!auth.id;
   const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {

@@ -7,6 +7,8 @@ import MovieList from './components/MoviesList';
 import Player from './components/Player';
 import { AddMedia } from './components/AddMedia';
 import SignInSide from './components/SignIn';
+import LogOut from './components/LogOut';
+import Recorder from './components/Recorder';
 
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,11 +34,14 @@ function App() {
       <Routes>
         <Route path='/' element={<Header />}>
           <Route path='tvshows' element={<TvList />} />
+          <Route path='' element={<TvList />} />
           {/* <Route path='movies' element={<MovieList />} /> */}
           <Route path='AddMedia' element={<AddMedia />} />
         </Route>
         <Route path='/player' element={<Player />} />
+        <Route path='/recorder' element={<Recorder />} />
         <Route path='/signin' element={<SignInSide />} />
+        <Route path='/LogOut' element={<LogOut />} />
       </Routes>
     </div>
   );

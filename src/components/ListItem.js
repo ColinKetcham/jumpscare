@@ -36,7 +36,10 @@ const ListItem = ({ item }) => {
         title={item.name}
       />
       <CardContent>
-        <Typography gutterBottom variant='h5' component='div'>
+        <Typography gutterBottom variant='h4' component='div'>
+          {item.title}
+        </Typography>
+        <Typography gutterBottom variant='h6' component='div'>
           {item.name}
         </Typography>
         <Typography variant='body2' color='text.secondary'>
@@ -61,11 +64,20 @@ const ListItem = ({ item }) => {
         >
           Play
         </Button>
-        <Button size='small'>Add jumps</Button>
-        <Button size='small'>View</Button>
-        <Button size='small' sx={{ color: 'red' }} onClick={remove}>
-          Remove
+        <Button
+          size='small'
+          onClick={() => {
+            navigate(
+              `/recorder?show=${item.tvid}&season=${item.season_number}&episode=${item.episode_number}`
+            );
+          }}
+        >
+          Add jumps
         </Button>
+        {/* <Button size='small'>View</Button> */}
+        {/* <Button size='small' sx={{ color: 'red' }} onClick={remove}>
+          Remove
+        </Button> */}
       </CardActions>
     </Card>
   );

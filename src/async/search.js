@@ -13,3 +13,7 @@ export const searchTMDB = async (name) => {
     console.error(error);
   }
 };
+
+export const signOut = () => {
+  window.localStorage.clear();
+};

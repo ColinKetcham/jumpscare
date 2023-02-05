@@ -25,6 +25,9 @@ const initialState = {
   loaded: false,
   error: null,
   title: 'loading',
+  duration: 0,
+  img: '',
+  id: null,
 };
 
 export const fetchStamps = createAsyncThunk('stamp/fetch', async (show) => {
@@ -39,12 +42,12 @@ export const fetchStamps = createAsyncThunk('stamp/fetch', async (show) => {
   }
 });
 
-export const createstamp = createAsyncThunk(
+export const createStamp = createAsyncThunk(
   'stamp/createNew',
   async (stamp) => {
     const token = window.localStorage.getItem('token');
     const { data: created } = await axios.post(
-      `${serverUrl}/api/stamp`,
+      `${serverUrl}/api/stamps`,
       stamp,
       {
         headers: {
@@ -56,7 +59,7 @@ export const createstamp = createAsyncThunk(
   }
 );
 
-export const deletestamp = createAsyncThunk('stamp/deletestamp', async (id) => {
+export const deleteStamp = createAsyncThunk('stamp/deletestamp', async (id) => {
   const token = window.localStorage.getItem('token');
 
   const { data: stamp } = await axios.delete(`${serverUrl}/api/stamp/${id}`, {
@@ -77,6 +80,7 @@ const stampSlice = createSlice({
       state.loaded = false;
       state.error = null;
       state.title = 'loading';
+      state.id = null;
     },
     // getstampSuccess: (state, { payload }) => {},
     // getstampFailure: (state, { payload }) => {},
@@ -89,9 +93,16 @@ const stampSlice = createSlice({
       })
       .addCase(fetchStamps.fulfilled, (state, { payload }) => {
         state.status = 'success';
-        state.stamp = payload.stamps;
+        if (payload.stamps.length === 0) {
+          state.stamp = [{ description: 'no stamps' }];
+        } else {
+          state.stamp = payload.stamps;
+        }
         state.loaded = true;
         state.title = payload.title;
+        state.duration = parseInt(payload.runtime) * 60000;
+        state.img = payload.still_path;
+        state.id = payload.id;
       })
       .addCase(fetchStamps.rejected, (state, { error }) => {
         state.status = 'failed';
@@ -100,12 +111,12 @@ const stampSlice = createSlice({
         state.stamp = [];
         state.title = 'error';
       })
-      .addCase(createstamp.fulfilled, (state, action) => {
+      .addCase(createStamp.fulfilled, (state, action) => {
         state.status = 'success';
         state.loaded = true;
         state.stamp = [...state.stamp, action.payload];
       })
-      .addCase(deletestamp.fulfilled, (state, action) => {
+      .addCase(deleteStamp.fulfilled, (state, action) => {
         state.status = 'success';
         state.loaded = true;
         state.stamp = state.stamp.filter(
