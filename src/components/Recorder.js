@@ -13,10 +13,14 @@ import {
 
 import { PlayArrowRounded, PauseRounded, Close } from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/Add';
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { fetchStamps, clearStamp } from '../redux/stamps';
 import { useDispatch, useSelector } from 'react-redux';
+import { useWakeLock } from 'react-screen-wake-lock';
+import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 
 import { Image } from 'mui-image';
 import StampForm from './StampForm';
@@ -35,6 +39,7 @@ const style = {
 };
 
 const Recorder = () => {
+  const handle = useFullScreenHandle();
   const [time, setTime] = useState(0);
   const [running, setRunning] = useState(false);
   const [stamps, setStamps] = useState([]);
@@ -45,6 +50,14 @@ const Recorder = () => {
   const [stampTime, setStampTime] = useState(0);
 
   const [open, setOpen] = React.useState(false);
+
+  const [fullscreen, setFullscreen] = useState(false);
+
+  const { isSupported, released, request, release } = useWakeLock({
+    onRequest: () => console.log('Screen Wake Lock: requested!'),
+    onError: () => console.log('An error happened 💥'),
+    onRelease: () => console.log('Screen Wake Lock: released!'),
+  });
 
   const handleOpen = () => {
     setOpen(true);
@@ -114,25 +127,28 @@ const Recorder = () => {
 
   const play = () => {
     setRunning(true);
+    request();
   };
 
   const pause = () => {
     setRunning(false);
+    release();
   };
 
   return (
-    <>
+    <FullScreen handle={handle}>
+      <Modal className='fullscreen-enabled' open={open} onClose={handleClose}>
+        <StampForm
+          time={stampTime}
+          handleClose={handleClose}
+          addStamp={addStamp}
+        />
+      </Modal>
+      <Modal open={completed} onClose={handleClose}>
+        <StampSubmit stamps={stamps} mediaId={info.id} />
+      </Modal>
       {info.loaded ? (
         <>
-          <Image
-            src={info.img}
-            style={{
-              position: 'fixed',
-              opacity: '0.3',
-              bottom: '0px',
-              zIndex: '0',
-            }}
-          />
           <div
             className='stopwatch'
             style={{
@@ -141,19 +157,63 @@ const Recorder = () => {
               alignItems: 'center',
             }}
           >
-            <IconButton
-              onClick={() => {
-                dispatch(clearStamp());
-                navigate(-1);
-              }}
-              sx={{
-                '&:hover': {
-                  background: 'rgb(50,50,50)',
-                },
+            <div
+              style={{
+                display: 'flex',
+                width: '100vw',
+                justifyContent: 'space-between',
+                color: 'white',
               }}
             >
-              <Close sx={{ fontSize: '3rem' }} htmlColor={'white'} />
-            </IconButton>
+              <IconButton
+                onClick={() => {
+                  dispatch(clearStamp());
+                  navigate(-1);
+                }}
+                sx={{
+                  '&:hover': {
+                    background: 'rgb(50,50,50)',
+                  },
+                }}
+              >
+                <Close sx={{ fontSize: '3rem' }} htmlColor={'white'} />
+              </IconButton>
+              {fullscreen ? (
+                <IconButton
+                  onClick={() => {
+                    setFullscreen(false);
+                    handle.exit();
+                  }}
+                  sx={{
+                    '&:hover': {
+                      background: 'rgb(50,50,50)',
+                    },
+                  }}
+                >
+                  <FullscreenExitIcon
+                    sx={{ fontSize: '3rem' }}
+                    htmlColor={'white'}
+                  />
+                </IconButton>
+              ) : (
+                <IconButton
+                  onClick={() => {
+                    setFullscreen(true);
+                    handle.enter();
+                  }}
+                  sx={{
+                    '&:hover': {
+                      background: 'rgb(50,50,50)',
+                    },
+                  }}
+                >
+                  <FullscreenIcon
+                    sx={{ fontSize: '3rem' }}
+                    htmlColor={'white'}
+                  />
+                </IconButton>
+              )}
+            </div>
             <Box
               sx={{
                 display: 'flex',
@@ -274,21 +334,21 @@ const Recorder = () => {
               </div>
             </Box>
           </div>
-          <Modal open={open} onClose={handleClose}>
-            <StampForm
-              time={stampTime}
-              handleClose={handleClose}
-              addStamp={addStamp}
-            />
-          </Modal>
-          <Modal open={completed} onClose={handleClose}>
-            <StampSubmit stamps={stamps} mediaId={info.id} />
-          </Modal>
+
+          <Image
+            src={info.img}
+            style={{
+              position: 'fixed',
+              opacity: '0.2',
+              bottom: '0px',
+              pointerEvents: 'none',
+            }}
+          />
         </>
       ) : (
         'loading'
       )}
-    </>
+    </FullScreen>
   );
 };
 

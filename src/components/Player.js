@@ -4,13 +4,18 @@ import Counter from './Counter';
 import { LinearProgress, Slider, Box, Button, IconButton } from '@mui/material';
 
 import { PlayArrowRounded, PauseRounded, Close } from '@mui/icons-material';
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { fetchStamps, clearStamp } from '../redux/stamps';
 import { useDispatch, useSelector } from 'react-redux';
 import { useWakeLock } from 'react-screen-wake-lock';
+import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 
 const Player = () => {
+  const handle = useFullScreenHandle();
+
   const [time, setTime] = useState(0);
   const [running, setRunning] = useState(false);
   const stamps = useSelector((state) => state.stamps.stamp);
@@ -23,6 +28,8 @@ const Player = () => {
   const [alert, setAlert] = useState('false');
 
   const [next, setNext] = useState(0);
+
+  const [fullscreen, setFullscreen] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -97,7 +104,6 @@ const Player = () => {
 
   const play = () => {
     setRunning(true);
-
     request();
   };
 
@@ -107,7 +113,7 @@ const Player = () => {
   };
 
   return (
-    <>
+    <FullScreen handle={handle}>
       {loaded ? (
         <div
           className='stopwatch'
@@ -118,22 +124,65 @@ const Player = () => {
             color: alert ? 'black' : 'white',
           }}
         >
-          <IconButton
-            onClick={() => {
-              dispatch(clearStamp());
-              navigate(-1);
-            }}
-            sx={{
-              '&:hover': {
-                background: 'rgb(50,50,50)',
-              },
+          <div
+            style={{
+              display: 'flex',
+              width: '100vw',
+              justifyContent: 'space-between',
             }}
           >
-            <Close
-              sx={{ fontSize: '3rem' }}
-              htmlColor={alert ? 'black' : 'white'}
-            />
-          </IconButton>
+            <IconButton
+              onClick={() => {
+                dispatch(clearStamp());
+                navigate(-1);
+              }}
+              sx={{
+                '&:hover': {
+                  background: 'rgb(50,50,50)',
+                },
+              }}
+            >
+              <Close
+                sx={{ fontSize: '3rem' }}
+                htmlColor={alert ? 'black' : 'white'}
+              />
+            </IconButton>
+            {fullscreen ? (
+              <IconButton
+                onClick={() => {
+                  setFullscreen(false);
+                  handle.exit();
+                }}
+                sx={{
+                  '&:hover': {
+                    background: 'rgb(50,50,50)',
+                  },
+                }}
+              >
+                <FullscreenExitIcon
+                  sx={{ fontSize: '3rem' }}
+                  htmlColor={alert ? 'black' : 'white'}
+                />
+              </IconButton>
+            ) : (
+              <IconButton
+                onClick={() => {
+                  setFullscreen(true);
+                  handle.enter();
+                }}
+                sx={{
+                  '&:hover': {
+                    background: 'rgb(50,50,50)',
+                  },
+                }}
+              >
+                <FullscreenIcon
+                  sx={{ fontSize: '3rem' }}
+                  htmlColor={alert ? 'black' : 'white'}
+                />
+              </IconButton>
+            )}
+          </div>
           <Box
             sx={{
               display: 'flex',
@@ -243,7 +292,7 @@ const Player = () => {
       ) : (
         'loading'
       )}
-    </>
+    </FullScreen>
   );
 };
 
