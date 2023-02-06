@@ -26,7 +26,7 @@ const Player = () => {
 
   const info = useSelector((state) => state.stamps);
 
-  const [alert, setAlert] = useState('false');
+  const [alert, setAlert] = useState(false);
 
   const [next, setNext] = useState(0);
 
