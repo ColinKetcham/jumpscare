@@ -144,10 +144,7 @@ const Player = () => {
                 },
               }}
             >
-              <Close
-                sx={{ fontSize: '3rem' }}
-                htmlColor={alert ? 'black' : 'white'}
-              />
+              <Close sx={{ fontSize: '3rem' }} htmlColor={'white'} />
             </IconButton>
             {fullscreen ? (
               <IconButton
@@ -163,7 +160,7 @@ const Player = () => {
               >
                 <FullscreenExitIcon
                   sx={{ fontSize: '3rem' }}
-                  htmlColor={alert ? 'black' : 'white'}
+                  htmlColor={'white'}
                 />
               </IconButton>
             ) : (
@@ -178,10 +175,7 @@ const Player = () => {
                   },
                 }}
               >
-                <FullscreenIcon
-                  sx={{ fontSize: '3rem' }}
-                  htmlColor={alert ? 'black' : 'white'}
-                />
+                <FullscreenIcon sx={{ fontSize: '3rem' }} htmlColor={'white'} />
               </IconButton>
             )}
           </div>
