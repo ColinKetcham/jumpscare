@@ -65,6 +65,7 @@ const SearchItem = ({ item }) => {
           size='small'
           onClick={() => {
             addToServer(item);
+            navigate('/');
           }}
         >
           Add

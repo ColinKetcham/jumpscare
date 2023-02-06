@@ -339,8 +339,10 @@ const Recorder = () => {
             src={info.img}
             style={{
               position: 'fixed',
-              opacity: '0.2',
+              opacity: '0.1',
               bottom: '0px',
+              width: '93%',
+              height: '93vh',
               pointerEvents: 'none',
             }}
           />

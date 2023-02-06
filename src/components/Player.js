@@ -12,6 +12,7 @@ import { fetchStamps, clearStamp } from '../redux/stamps';
 import { useDispatch, useSelector } from 'react-redux';
 import { useWakeLock } from 'react-screen-wake-lock';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
+import { Image } from 'mui-image';
 
 const Player = () => {
   const handle = useFullScreenHandle();
@@ -122,6 +123,7 @@ const Player = () => {
             flexDirection: 'column',
             alignItems: 'center',
             color: alert ? 'black' : 'white',
+            backgroundColor: 'black',
           }}
         >
           <div
@@ -191,6 +193,7 @@ const Player = () => {
               justifyContent: 'space-between',
               width: '90%',
               height: '90vh',
+              // backgroundImage: 'url("' + info.img + '")',
               backgroundColor: alert ? 'rgb(255, 255, 255)' : 'rgb(20, 20, 20)',
               padding: '1rem',
             }}
@@ -288,6 +291,17 @@ const Player = () => {
               />
             </div>
           </Box>
+          <Image
+            src={info.img}
+            style={{
+              position: 'fixed',
+              opacity: '0.1',
+              bottom: '0px',
+              width: '93%',
+              height: '93vh',
+              pointerEvents: 'none',
+            }}
+          />
         </div>
       ) : (
         'loading'
