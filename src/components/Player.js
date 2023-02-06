@@ -8,6 +8,7 @@ import { PlayArrowRounded, PauseRounded, Close } from '@mui/icons-material';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { fetchStamps, clearStamp } from '../redux/stamps';
 import { useDispatch, useSelector } from 'react-redux';
+import { useWakeLock } from 'react-screen-wake-lock';
 
 const Player = () => {
   const [time, setTime] = useState(0);
@@ -26,6 +27,12 @@ const Player = () => {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
+
+  const { isSupported, released, request, release } = useWakeLock({
+    onRequest: () => console.log('Screen Wake Lock: requested!'),
+    onError: () => console.log('An error happened 💥'),
+    onRelease: () => console.log('Screen Wake Lock: released!'),
+  });
 
   const buffer = 10000; //10 seconds of buffer
 
@@ -90,10 +97,13 @@ const Player = () => {
 
   const play = () => {
     setRunning(true);
+
+    request();
   };
 
   const pause = () => {
     setRunning(false);
+    release();
   };
 
   return (
